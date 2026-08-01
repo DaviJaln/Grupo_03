@@ -8,8 +8,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mycompany</groupId>
-    <artifactId>tresenrayajuego</artifactId>
+    <artifactId>Grupo_03</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <name>Grupo_03</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,7 +20,6 @@
 
     <dependencies>
 
-        <!-- Controles gráficos de JavaFX -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -29,9 +29,11 @@
     </dependencies>
 
     <build>
+
+        <finalName>Grupo_03</finalName>
+
         <plugins>
 
-            <!-- Compilación con Java 25 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -41,7 +43,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Ejecución de JavaFX -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
