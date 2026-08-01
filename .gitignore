@@ -1,0 +1,16 @@
+# Archivos generados por Maven
+target/
+
+# Archivos compilados
+*.class
+
+# Configuración privada de NetBeans
+nbproject/private/
+
+# Configuraciones de otros editores
+.idea/
+.vscode/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
