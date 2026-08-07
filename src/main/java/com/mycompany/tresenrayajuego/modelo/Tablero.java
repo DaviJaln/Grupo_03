@@ -4,6 +4,8 @@
  */
 package com.mycompany.tresenrayajuego.modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author pycca
@@ -16,7 +18,7 @@ public class Tablero {
         this.casillas= new char[tamanio][tamanio];
         for(int fila = 0; fila<tamanio; fila++){
             for (int columna = 0; columna<tamanio;columna++){
-                casillas[fila][columna] = vacio; 
+                casillas[fila][columna] = vacio; //''|''|''
                         
             }
         }
@@ -63,8 +65,206 @@ public class Tablero {
         casillas[fila][columna]=simbolo;
         return true;
     }
+    public void mostrarTablero(){
+        for (int fila=0; fila<tamanio; fila++){
+            for(int columna = 0; columna<tamanio; columna++){
+                System.out.print(casillas[fila][columna]);
+                /* Visualmente no queremos tener algo como X|O|X| 
+                porque el ultimo | no sería correcto, por eso validamos si
+                columna es menor al tamaño -1.
+                */
+                if(columna<tamanio-1){
+                    System.out.print("|");
+                }
+            }
+            System.out.println();//saltamos a otra fila
+            if(fila<tamanio-1){
+                System.out.println("-----");
+            }
+        }
+        
+    }
     
+    public boolean isFull(){
+        for (int fila=0;fila<tamanio; fila++){
+            for(int columna = 0; columna<tamanio;columna++){
+                if(casillas[fila][columna]==vacio ){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isWinner(char simbolo){
+        if(simbolo!='X'&& simbolo!='O'){
+            return false;
+        }
+        //Verificamos las filas
+        for(int fila = 0; fila<tamanio; fila++){
+            boolean filaCompleta = true;
+            for(int columna=0; columna<tamanio;columna++){
+                if(casillas[fila][columna]!=simbolo){
+                    filaCompleta = false;
+                   break;
+                }
+            }
+            if(filaCompleta){return true;}
+
+        }
+        //Verificamos las columnas
+        for(int columna=0; columna<tamanio;columna++){
+            boolean columnaCompleta = true;
+            for(int fila= 0; fila<tamanio;fila++){
+                if(casillas[fila][columna]!= simbolo){
+                   columnaCompleta = false;
+                   break;
+                }
+            }
+            if(columnaCompleta){return true;}
+        }
+        //Chequeamos las diagnolaes
+        boolean diagonalPrincipal = true; 
+        boolean diagonalSecundaria = true;
+        for (int posicion=0; posicion<tamanio;posicion++){
+            if(casillas[posicion][posicion]!=simbolo){
+                diagonalPrincipal = false;
+            }
+            if(casillas[posicion][tamanio-1-posicion]!=simbolo){ //0|0|tamanio-1-0 primera vuelta
+                                                                 //0|2-1-1|0 segunda vuelta, por eso escogemos la columna de esa forma.
+                diagonalSecundaria = false;
+            }
+            
+        }
+        return diagonalPrincipal || diagonalSecundaria;
+    }
+    //generaremos varios estados posibles a partir de cada tablero actual
+    public Tablero copy(){
+        Tablero copia = new Tablero();
+        for(int fila= 0; fila<tamanio; fila++){
+            for ( int columna = 0; columna<tamanio; columna ++){
+                /*Copiaremos el contenido de la casilla, no hacemos solo this porque
+                estariamos referenciando al mismo objeto.*/
+                copia.casillas[fila][columna] = this.casillas[fila][columna];
+        
+ 
+            }
+        }
+        return copia;
+    }
+    /* Una fila,columna o diagonal se encontrará disponible cuando para X no contenga ningun O
+    Puede haber X,X,vacío, entonces esta disponible para q X gane
+    o tambien X,vacio,vacio, puede volver a poner X
+    vacio,vacio,vacio es algo que tambien serviría para que X inicie su jugada.
+    Pero X,O, vacío, no sirve para que ganemos, porque O bloquea dicha posibilidad. 
+    Lo mismo se usa para O.
     
+    */
     
-    
+    public int countAvailableLines(char simbolo) {
+
+        if (simbolo != 'X' && simbolo != 'O') {
+            return 0;
+        }
+        char oponente;
+        if(simbolo=='X'){
+            oponente = 'O';
+            
+        } else{
+            oponente = 'X';
+        }
+        int lineasDisponibles = 0;
+        //Contaremos las filas disponibles
+        for ( int fila = 0; fila<tamanio; fila++){
+            boolean disponible = true;
+            for(int columna = 0; columna<tamanio; columna++){
+                if(casillas[fila][columna]==oponente){
+                    disponible = false;
+                    break;
+                }
+            }
+            
+            if(disponible){
+                lineasDisponibles++;
+            }
+        }
+        //Contaremos columnas disponibless
+        for(int columna = 0; columna<tamanio; columna++){
+            boolean disponible = true; 
+            for(int fila = 0; fila<tamanio;fila++){
+                if(casillas[fila][columna]== oponente){
+                    disponible = false;
+                    break;
+                    
+                }
+            }
+            if(disponible){
+                lineasDisponibles++;
+            }
+        }
+        //Diagonales
+        boolean diagonalPrincipalDisponible = true;
+        boolean diagonalSecundariaDisponible = true;
+        for(int posicion = 0; posicion<tamanio; posicion++){
+            if(casillas[posicion][posicion]==oponente){
+                diagonalPrincipalDisponible= false;
+            }
+            if(casillas[posicion][tamanio-1-posicion]==oponente){
+                diagonalSecundariaDisponible = false;
+            }
+        }
+        if(diagonalPrincipalDisponible){
+            lineasDisponibles++;
+        }
+        if(diagonalSecundariaDisponible){
+            
+            lineasDisponibles++;
+            
+        }
+        return lineasDisponibles;
+        
+    }
+    public int calculateUtility(char simbolo){
+        if(simbolo!='X' && simbolo !='O'){
+            return 0;
+        }
+        char oponente;
+        if(simbolo=='X'){
+            oponente = 'O';
+            
+        }else{
+            oponente= 'X';
+            
+        }
+        int lineasJugador= countAvailableLines(simbolo);
+        int lineasOponente = countAvailableLines(oponente);
+        return lineasJugador - lineasOponente;
+    }
+    /* Habiendo implementado el metodo calculateUtility para comenzar
+    a desarrollar de mejor forma nuestro proyecto, ahora si vamos a generar los 
+    posibles estados del tablero, dado a que el tablero actual
+    y un jugador con el turno, debemos producir todos los tableros que podrían
+    resultar de colcuar su símbolo en cada casilla libre, esos 
+    tableros serían hijos de un nodo en el arbol.
+    */
+    //GenerateStates generara los estados del tablero.
+    public ArrayList<Tablero> generateStates(char simbolo){
+        ArrayList<Tablero> estados = new ArrayList<>();
+        if(simbolo !='X'&&simbolo!='O'){
+            return estados;
+        }
+        for (int fila = 0; fila < tamanio; fila++) {
+            for (int columna = 0; columna < tamanio; columna++) {
+
+                if (isEmpty(fila, columna)) {
+
+                    Tablero nuevoEstado = this.copy();
+
+                    nuevoEstado.colocarSimbolo(fila, columna, simbolo);
+
+                    estados.add(nuevoEstado);
+                }
+            }
+        }
+        return estados;
+    }
 }
