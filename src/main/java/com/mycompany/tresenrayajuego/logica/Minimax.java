@@ -12,7 +12,6 @@ import java.util.Random;
  * @author pycca
  */
 
-
 public class Minimax {
     //Aqui guardaremos el analisis de las jugadas
     //que hizo la computadora en su ultimo turno
