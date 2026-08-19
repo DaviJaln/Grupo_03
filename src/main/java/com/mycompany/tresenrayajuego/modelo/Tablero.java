@@ -53,10 +53,7 @@ public class Tablero {
     //Chequee que usamos ya metodos anteriores, asi evitamos escribir tanto codigo
     //y podemos ahorrarnos daño visual con tanta cosa xd. 
     public boolean colocarSimbolo(int fila, int columna, char simbolo){
-        if(!posicionValida(fila,columna)){
-            return false;
-        }
-        if(!isEmpty(fila,columna)){
+        if(!posicionValida(fila,columna)||!isEmpty(fila,columna)){
             return false;
         }
         if(simbolo!='X'&&simbolo!='O'){

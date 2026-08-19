@@ -4,7 +4,6 @@
  */
 package com.mycompany.tresenrayajuego;
 
-
 import com.mycompany.tresenrayajuego.logica.Partida;
 
 public class PruebaPartida {
@@ -14,64 +13,46 @@ public class PruebaPartida {
         Partida partida =
                 new Partida('X', 'O', true);
 
-        System.out.println("ESTADO INICIAL");
+        // Fila 0
+        partida.getTablero().colocarSimbolo(0, 0, 'X');
+        partida.getTablero().colocarSimbolo(0, 1, 'O');
+        partida.getTablero().colocarSimbolo(0, 2, 'X');
+
+        // Fila 1
+        partida.getTablero().colocarSimbolo(1, 0, 'X');
+        partida.getTablero().colocarSimbolo(1, 1, 'O');
+        partida.getTablero().colocarSimbolo(1, 2, 'O');
+
+        // Fila 2
+        partida.getTablero().colocarSimbolo(2, 0, 'O');
+        partida.getTablero().colocarSimbolo(2, 1, 'X');
+        partida.getTablero().colocarSimbolo(2, 2, 'X');
+
+        System.out.println("TABLERO DE PRUEBA");
 
         partida.getTablero().mostrarTablero();
 
-        System.out.println("Turno actual: "
-                + partida.getTurnoActual());
+        System.out.println(
+                "\nTablero lleno?: "
+                + partida.getTablero().isFull());
 
-        System.out.println("Partida terminada?: "
+        System.out.println(
+                "Partida terminada?: "
                 + partida.partidaTerminada());
 
-
-        System.out.println("\nJUGADA DEL HUMANO");
-
-        partida.jugarHumano(0, 0);
-
-        partida.getTablero().mostrarTablero();
-
-        System.out.println("Turno actual: "
-                + partida.getTurnoActual());
-
-        System.out.println("Partida terminada?: "
-                + partida.partidaTerminada());
-
-
-        System.out.println("\nJUGADA DE LA COMPUTADORA");
-
-        partida.jugarComputadora();
-
-        partida.getTablero().mostrarTablero();
-
-        System.out.println("Turno actual: "
-                + partida.getTurnoActual());
-
-        System.out.println("Partida terminada?: "
-                + partida.partidaTerminada());
-
-
-        System.out.println("\nSEGUNDA JUGADA DEL HUMANO");
-
-        partida.jugarHumano(0, 1);
-
-        partida.getTablero().mostrarTablero();
-
-        System.out.println("Turno actual: "
-                + partida.getTurnoActual());
-
-        System.out.println("Partida terminada?: "
-                + partida.partidaTerminada());
-
-        System.out.println("Empate?: "
+        System.out.println(
+                "Empate?: "
                 + partida.esEmpate());
 
-        char ganador = partida.obtenerGanador();
+        char ganador =
+                partida.obtenerGanador();
 
         if (ganador == ' ') {
-            System.out.println("Todavia no existe ganador.");
+            System.out.println(
+                    "No existe ganador.");
         } else {
-            System.out.println("Ganador: " + ganador);
+            System.out.println(
+                    "Ganador: " + ganador);
         }
     }
 }
